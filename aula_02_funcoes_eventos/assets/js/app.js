@@ -5,6 +5,9 @@ const Nascimento = document.querySelector("#nascimento");
 const btnSalvar = document.querySelector("#btn-salvar");
 const Resultado = document.querySelector("#resultado");
 
+const db_dados = localStorage.getItem("Clientes") ? JSON.parse(localStorage.getItem("Clientes")) : [];
+// []=representa uma array
+
 const NomeValor = Nome.value;
 const EmailValor = Email.value;
 const TelefoneValor = Telefone.value;
@@ -12,6 +15,12 @@ const NascimentoValor = Nascimento.value;
 
 btnSalvar.addEventListener("click", (e) => {
   e.preventDefault();
+  if (!Nome.value || !Email.value || !Telefone.value || !Nascimento.value) {
+    return console.log("Campos não podem ser vazios!")
+  }
+  if (Nome.value.length < 3) {
+    return console.log("Nome precisa ter no minimo 5 caracteristicas");
+  }
 
   const dados = {
     nome: Nome.value,
@@ -20,17 +29,28 @@ btnSalvar.addEventListener("click", (e) => {
     nascimento: Nascimento.value,
   };
 
-if (!Nome.value || !Email.value || !Telefone.value || !Nascimento.value) {
-  return console.log("Campos não podem ser vazios!")
-}
 
 // as duas barras em pé ="||" representa ou/or
 
-  console.log(dados);
+  db_dados.push(dados);
+  localStorage.setItem("Clientes", JSON.stringify(db_dados))
+
+  Nome.value = "";
+  Email.value = "";
+  Telefone.valu = "";
+  Nascimento.valu = "";
 });
 
-Nome.addEventListener("input", (e) => {});
+Nome.addEventListener("input", (e) => {
+  if (Nome.value.length < 3) {
+    return console.log("Nome precisa ter no minimo 5 caracteristicas");
+  }
+});
 
 Email.addEventListener("input", (e) => {});
 
 Telefone.addEventListener("input", (e) => {});
+
+
+
+
